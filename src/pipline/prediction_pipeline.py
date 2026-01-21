@@ -1,9 +1,13 @@
 import sys
+import os
+from pathlib import Path
 from src.entity.config_entity import VehiclePredictorConfig
 from src.entity.s3_estimator import Proj1Estimator
 from src.exception import MyException
 from src.logger import logging
 from pandas import DataFrame
+from src.utils.main_utils import load_object
+from src.constants import AWS_ACCESS_KEY_ID_ENV_KEY, AWS_SECRET_ACCESS_KEY_ENV_KEY
 
 
 class VehicleData:
@@ -98,11 +102,41 @@ class VehicleDataClassifier:
         """
         try:
             logging.info("Entered predict method of VehicleDataClassifier class")
-            model = Proj1Estimator(
-                bucket_name=self.prediction_pipeline_config.model_bucket_name,
-                model_path=self.prediction_pipeline_config.model_file_path,
-            )
-            result =  model.predict(dataframe)
+            # If AWS creds are present, use S3; otherwise, fall back to local model
+            aws_key = os.getenv(AWS_ACCESS_KEY_ID_ENV_KEY)
+            aws_secret = os.getenv(AWS_SECRET_ACCESS_KEY_ENV_KEY)
+
+            if aws_key and aws_secret:
+                logging.info("AWS credentials found; using S3 model for prediction")
+                model = Proj1Estimator(
+                    bucket_name=self.prediction_pipeline_config.model_bucket_name,
+                    model_path=self.prediction_pipeline_config.model_file_path,
+                )
+                result = model.predict(dataframe)
+            else:
+                logging.info("AWS credentials missing; loading latest local trained model")
+                # Find latest artifact model.pkl
+                artifact_root = Path("artifact")
+                if not artifact_root.exists():
+                    raise MyException("artifact directory not found for local model fallback", sys)
+
+                latest_model_path = None
+                # Sort subdirs by modification time, descending
+                subdirs = [d for d in artifact_root.iterdir() if d.is_dir()]
+                subdirs.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+
+                for d in subdirs:
+                    candidate = d / "model_trainer" / "trained_model" / "model.pkl"
+                    if candidate.exists():
+                        latest_model_path = candidate
+                        break
+
+                if latest_model_path is None:
+                    raise MyException("No local trained model found in artifact/*/model_trainer/trained_model/", sys)
+
+                logging.info(f"Loading local model from {latest_model_path}")
+                local_model = load_object(file_path=str(latest_model_path))
+                result = local_model.predict(dataframe)
             
             return result
         
