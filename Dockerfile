@@ -4,11 +4,14 @@ FROM python:3.10-slim-buster
 # Set the working directory
 WORKDIR /app
 
-# Copy your application code
-COPY . /app
+# Copy only requirements first for better caching
+COPY requirements.txt /app/
 
 # Install the dependencies
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy your application code
+COPY . /app
 
 # Expose the port FastAPI will run on
 EXPOSE 5000
