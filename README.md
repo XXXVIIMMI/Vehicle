@@ -3,7 +3,7 @@ Machine Learning Operation Project-01
 
 # MLOps Project - Vehicle Insurance Data Pipeline
 
-Welcome to this MLOps project, designed to demonstrate a robust pipeline for managing vehicle insurance data. This project aims to impress recruiters and visitors by showcasing the various tools, techniques, services, and features that go into building and deploying a machine learning pipeline for real-world data management. Follow along to learn about project setup, data processing, model deployment, and CI/CD automation!
+Welcome to my MLOps project! I built this project to demonstrate a robust, end-to-end pipeline for managing vehicle insurance data. The goal is to showcase the tools, techniques, services, and best practices involved in building, deploying, and maintaining a machine learning pipeline for real-world data.
 
 ---
 
@@ -14,12 +14,11 @@ Welcome to this MLOps project, designed to demonstrate a robust pipeline for man
 
 ### Step 2: Package Management
 - Write the setup for importing local packages in `setup.py` and `pyproject.toml` files.
-- **Tip**: Learn more about these files from `crashcourse.txt`.
 
 ### Step 3: Virtual Environment and Dependencies
 - Create a virtual environment and install required dependencies from `requirements.txt`:
   ```bash
-  conda create -n vehicle python=3.10 -y
+  conda create -n vehicle python=3.11 -y
   conda activate vehicle
   pip install -r requirements.txt
   ```
@@ -38,7 +37,7 @@ Welcome to this MLOps project, designed to demonstrate a robust pipeline for man
 3. Retrieve the MongoDB connection string for Python and save it (replace `<password>` with your password).
 
 ### Step 5: Pushing Data to MongoDB
-1. Create a folder named `notebook`, add the dataset, and create a notebook file `mongoDB_demo.ipynb`.
+1. Create a folder named `notebook`, add the dataset, and create a notebook file `mongoDB.ipynb`.
 2. Use the notebook to push data to the MongoDB database.
 3. Verify the data in MongoDB Atlas under Database > Browse Collections.
 
@@ -49,9 +48,8 @@ Welcome to this MLOps project, designed to demonstrate a robust pipeline for man
 ### Step 6: Set Up Logging and Exception Handling
 - Create logging and exception handling modules. Test them on a demo file `demo.py`.
 
-### Step 7: Exploratory Data Analysis (EDA) and Feature Engineering
-- Analyze and engineer features in the `EDA` and `Feature Engg` notebook for further processing in the pipeline.
-
+### Step 7: Exploratory Data Analysis (EDA) Feature Engineering And Model Training
+- Analyze and engineer features in the `EDA_Model_Training.ipynb` notebook for further processing in the pipeline.
 ---
 
 ## 📥 Data Ingestion
@@ -151,10 +149,4 @@ Welcome to this MLOps project, designed to demonstrate a robust pipeline for man
 3. **CI/CD Automation** with GitHub Actions, Docker, AWS EC2, and ECR
 
 ---
-
-## 💬 Connect
-If you found this project helpful or have any questions, feel free to reach out!
-
----
-
 This README provides a structured walkthrough of the MLOps project, showcasing the end-to-end pipeline, cloud integration, CI/CD setup, and robust data handling capabilities.
