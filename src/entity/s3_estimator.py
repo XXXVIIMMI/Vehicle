@@ -61,6 +61,6 @@ class Proj1Estimator:
         try:
             if self.loaded_model is None:
                 self.loaded_model = self.load_model()
-            return self.loaded_model.predict(dataframe=dataframe)
+            return self.loaded_model.predict(dataframe)
         except Exception as e:
             raise MyException(e, sys)
